@@ -69,12 +69,37 @@ function initMap() {
 
   var geocoder = new google.maps.Geocoder();
 
-  document.getElementById('submit').addEventListener('click', function() {
-    geocodeAddress(geocoder, map);
+  var input = document.getElementById('address');
+  var autocomplete = new google.maps.places.Autocomplete(address);
+  autocomplete.bindTo('bounds', map);
+  autocomplete.setFields(['address_components', 'geometry', 'icon', 'name']);
+
+  autocomplete.addListener('place_changed', function() {
+    var place = autocomplete.getPlace();
+    if (!place.geometry) {
+      window.alert("No details available for input: '" + place.name + "'");
+      return;
+    }
+    if (place.geometry.viewport) {
+      map.fitBounds(place.geometry.viewport);
+    } else {
+      map.setCenter(place.geometry.location);
+      map.setZoom(17);
+    }
+    var address = '';
+    if (place.address_components) {
+      address = [
+        (place.address_components[0] && place.address_components[0].short_name || ''),          (place.address_components[1] && place.address_components[1].short_name || ''),
+        (place.address_components[2] && place.address_components[2].short_name || '')
+      ].join(' ');
+    }
+    geocodeAddress(geocoder, map, address);
   });
 }
 
-function geocodeAddress(geocoder, resultsMap) {
+var address = document.getElementById('address').value;
+
+function geocodeAddress(geocoder, resultsMap, address) {
 
   var odessaCenter = new google.maps.Polygon({
     paths: odessaCenterCoords
@@ -99,15 +124,6 @@ function geocodeAddress(geocoder, resultsMap) {
   var odessaKrijanovka = new google.maps.Polygon({
     paths: odessaKrijanovkaCoords
   });
-
-  var address = document.getElementById('address').value;
-  // var floatPanel = document.getElementById('floating-panel');
-  var input = document.getElementById('address');
-  // map.controls[google.maps.ControlPosition.TOP_RIGHT].push(floatPanel);
-  var autocomplete = new google.maps.places.Autocomplete(input);
-  autocomplete.bindTo('bounds', map);
-  autocomplete.setFields(['address_components', 'geometry', 'icon', 'name']);
-
 
   geocoder.geocode({'address': address}, function(results, status) {
     if (status === 'OK') {
