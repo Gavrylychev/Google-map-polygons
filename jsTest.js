@@ -70,7 +70,7 @@ function initMap() {
   var geocoder = new google.maps.Geocoder();
 
   var input = document.getElementById('address');
-  var autocomplete = new google.maps.places.Autocomplete(address);
+  var autocomplete = new google.maps.places.Autocomplete(input);
   autocomplete.bindTo('bounds', map);
   autocomplete.setFields(['address_components', 'geometry', 'icon', 'name']);
 
@@ -97,7 +97,6 @@ function initMap() {
   });
 }
 
-var address = document.getElementById('address').value;
 
 function geocodeAddress(geocoder, resultsMap, address) {
 
