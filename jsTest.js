@@ -1,3 +1,5 @@
+var marker;
+
 function initMap() {
   var map = new google.maps.Map(document.getElementById('map'), {
     zoom: 11,
@@ -124,53 +126,66 @@ function geocodeAddress(geocoder, resultsMap, address) {
     paths: odessaKrijanovkaCoords
   });
 
+  function hideMarker() {
+    // marker.setMap(null);
+    marker = null;
+  }
+  
   geocoder.geocode({'address': address}, function(results, status) {
+    // hideMarker();
     if (status === 'OK') {
       if (google.maps.geometry.poly.containsLocation(results[0].geometry.location, odessaCenter)) {
         resultsMap.setCenter(results[0].geometry.location);
-        var marker = new google.maps.Marker({
+        marker = new google.maps.Marker({
           map: resultsMap,
-          position: results[0].geometry.location
+          position: results[0].geometry.location,
+          animation: google.maps.Animation.DROP,
+          title: 'Вы находитесь здесь?'
         });
         alert('Доставка от 150 грн');
       } else if (google.maps.geometry.poly.containsLocation(results[0].geometry.location, odessaFontan)) {
         resultsMap.setCenter(results[0].geometry.location);
-        var marker = new google.maps.Marker({
+        marker = new google.maps.Marker({
           map: resultsMap,
-          position: results[0].geometry.location
+          position: results[0].geometry.location,
+          animation: google.maps.Animation.DROP
         });
         alert('Доставка от 250 грн');
       } else if (google.maps.geometry.poly.containsLocation(results[0].geometry.location, odessaTairovo)) {
         resultsMap.setCenter(results[0].geometry.location);
-        var marker = new google.maps.Marker({
+        marker = new google.maps.Marker({
           map: resultsMap,
-          position: results[0].geometry.location
+          position: results[0].geometry.location,
+          animation: google.maps.Animation.DROP
         });
         alert('Доставка от 350 грн');
       } else if (google.maps.geometry.poly.containsLocation(results[0].geometry.location, odessaKotovskogo)) {
         resultsMap.setCenter(results[0].geometry.location);
-        var marker = new google.maps.Marker({
+        marker = new google.maps.Marker({
           map: resultsMap,
-          position: results[0].geometry.location
+          position: results[0].geometry.location,
+          animation: google.maps.Animation.DROP
         });
         alert('Доставка от 450 грн');
       } else if (google.maps.geometry.poly.containsLocation(results[0].geometry.location, odessaFar)) {
         resultsMap.setCenter(results[0].geometry.location);
-        var marker = new google.maps.Marker({
+        marker = new google.maps.Marker({
           map: resultsMap,
-          position: results[0].geometry.location
+          position: results[0].geometry.location,
+          animation: google.maps.Animation.DROP
         });
         alert('Доставка от 400 грн');
       } else if (google.maps.geometry.poly.containsLocation(results[0].geometry.location, odessaKrijanovka)) {
         resultsMap.setCenter(results[0].geometry.location);
-        var marker = new google.maps.Marker({
+        marker = new google.maps.Marker({
           map: resultsMap,
-          position: results[0].geometry.location
+          position: results[0].geometry.location,
+          animation: google.maps.Animation.DROP
         });
         alert('Доставка от 500 грн');
       }
     } else {
-      alert('Заказ не принят по причине: неверно введен адрес' );
+      alert( 'Заказ не принят по причине: неверно введен адрес' );
     }
   });
 }
