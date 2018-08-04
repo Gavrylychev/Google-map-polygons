@@ -76,7 +76,7 @@ function initMap() {
   autocomplete.bindTo('bounds', map);
   autocomplete.setFields(['address_components', 'geometry', 'icon', 'name']);
 
-  autocomplete.addListener('place_changed', function() {
+  autocomplete.addListener('place_changed', _.throttle(function() {
     var place = autocomplete.getPlace();
     if (!place.geometry) {
       window.alert("No details available for input: '" + place.name + "'");
@@ -96,7 +96,7 @@ function initMap() {
       ].join(' ');
     }
     geocodeAddress(geocoder, map, address);
-  });
+  }, 500));
 }
 
 
