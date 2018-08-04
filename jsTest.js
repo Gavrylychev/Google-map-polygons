@@ -127,12 +127,13 @@ function geocodeAddress(geocoder, resultsMap, address) {
   });
 
   function hideMarker() {
-    // marker.setMap(null);
-    marker = null;
+    if (marker) {
+		marker.setMap(null);
+	 }
   }
-  
+
   geocoder.geocode({'address': address}, function(results, status) {
-    // hideMarker();
+    hideMarker();
     if (status === 'OK') {
       if (google.maps.geometry.poly.containsLocation(results[0].geometry.location, odessaCenter)) {
         resultsMap.setCenter(results[0].geometry.location);
