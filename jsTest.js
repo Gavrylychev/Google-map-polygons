@@ -98,7 +98,7 @@ function initMap() {
     }
     hideMarker();
     geocodeAddress(geocoder, map, address);
-  }, 500));
+  }, 1000));
 }
 
 
