@@ -91,10 +91,12 @@ function initMap() {
     var address = '';
     if (place.address_components) {
       address = [
-        (place.address_components[0] && place.address_components[0].short_name || ''),          (place.address_components[1] && place.address_components[1].short_name || ''),
+        (place.address_components[0] && place.address_components[0].short_name || ''),
+        (place.address_components[1] && place.address_components[1].short_name || ''),
         (place.address_components[2] && place.address_components[2].short_name || '')
       ].join(' ');
     }
+    hideMarker();
     geocodeAddress(geocoder, map, address);
   }, 500));
 }
@@ -127,8 +129,7 @@ function geocodeAddress(geocoder, resultsMap, address) {
   });
 
   function hideMarker() {
-    // marker.setMap(null);
-    marker = null;
+    marker.setMap(null);
   }
   
   geocoder.geocode({'address': address}, function(results, status) {
