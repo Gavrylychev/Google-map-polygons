@@ -76,7 +76,7 @@ function initMap() {
   autocomplete.bindTo('bounds', map);
   autocomplete.setFields(['address_components', 'geometry', 'icon', 'name']);
 
-  autocomplete.addListener('place_changed', function() {
+  autocomplete.addListener('place_changed', function () {
     var place = autocomplete.getPlace();
     if (!place.geometry) {
       window.alert("No details available for input: '" + place.name + "'");
@@ -91,7 +91,8 @@ function initMap() {
     var address = '';
     if (place.address_components) {
       address = [
-        (place.address_components[0] && place.address_components[0].short_name || ''),          (place.address_components[1] && place.address_components[1].short_name || ''),
+        (place.address_components[0] && place.address_components[0].short_name || ''),
+        (place.address_components[1] && place.address_components[1].short_name || ''),
         (place.address_components[2] && place.address_components[2].short_name || '')
       ].join(' ');
     }
@@ -127,12 +128,13 @@ function geocodeAddress(geocoder, resultsMap, address) {
   });
 
   function hideMarker() {
-    // marker.setMap(null);
-    marker = null;
+  	if (marker) {
+		marker.setMap(null);
+	}
   }
-  
-  geocoder.geocode({'address': address}, function(results, status) {
-    // hideMarker();
+
+  geocoder.geocode({'address': address}, function (results, status) {
+    hideMarker();
     if (status === 'OK') {
       if (google.maps.geometry.poly.containsLocation(results[0].geometry.location, odessaCenter)) {
         resultsMap.setCenter(results[0].geometry.location);
